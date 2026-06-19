@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>העלאת נתונים</title>
+<style>
+  body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#ECEFED;gap:20px;margin:0}
+  button{padding:16px 32px;background:#1F6F5C;color:#fff;border:none;border-radius:12px;font-size:1.1rem;cursor:pointer;font-family:inherit}
+  p{color:#5C6B66;font-size:.95rem;text-align:center}
+  #status{font-size:1rem;font-weight:700;color:#1F6F5C}
+</style>
+</head>
+<body>
+<h2>העלאת נתוני יוני 2026 ל-Firebase</h2>
+<p>לחץ על הכפתור כדי להעלות את הנתונים שלך לענן.</p>
+<button onclick="migrate()">העלה נתונים</button>
+<div id="status"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const app = initializeApp({
+  apiKey: "AIzaSyABZObqzm7p80ifzbXIqbk1C_tAdLLNIlE",
+  authDomain: "maazan-f82f6.firebaseapp.com",
+  projectId: "maazan-f82f6",
+  storageBucket: "maazan-f82f6.firebasestorage.app",
+  messagingSenderId: "602042982070",
+  appId: "1:602042982070:web:a826ba08e49b3730e59017"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const DATA = {"settings":{"monthlyBudget":0,"savingsGoal":0,"catLimits":{},"accountSet":true,"openingBalance":-13432,"openingDate":"2026-06-15T21:00:00.000Z"},"savings":0,"months":{"budget:tx:2026-06":[{"id":"1781603379248u0xj","type":"expense","amount":130,"cat":"insurance","desc":"ביטוח תאונות אישיות","date":"2026-06-16T09:00:00.000Z"},{"id":"178160322456249ky","type":"expense","amount":60,"cat":"home","desc":"קלוד","date":"2026-06-16T09:00:00.000Z"},{"id":"1781603159190ys6d","type":"expense","amount":75,"cat":"home","desc":"ספוטיפיי","date":"2026-06-16T09:00:00.000Z"},{"id":"1781603128864q8z1","type":"expense","amount":25,"cat":"kids","desc":"עומרי טלפון","date":"2026-06-16T09:00:00.000Z"},{"id":"1781603104238tcvl","type":"expense","amount":33,"cat":"home","desc":"נטפליקס","date":"2026-06-16T09:00:00.000Z"},{"id":"1781603035374kbqv","type":"expense","amount":60,"cat":"insurance","desc":"ביטוח בריאות","date":"2026-06-16T09:00:00.000Z"},{"id":"1781603013534a1mp","type":"expense","amount":92,"cat":"insurance","desc":"ביטוח חיים","date":"2026-06-16T09:00:00.000Z"},{"id":"178160292364825a7","type":"expense","amount":1000,"cat":"transport","desc":"דלק","date":"2026-06-16T09:00:00.000Z"},{"id":"1781602898007e9hv","type":"expense","amount":324,"cat":"home","desc":"סלקום","date":"2026-06-16T09:00:00.000Z"},{"id":"1781602866482x7wf","type":"expense","amount":240,"cat":"transport","desc":"ביטוח מקיף","date":"2026-06-16T09:00:00.000Z"},{"id":"1781602743420uqsw","type":"income","amount":3000,"cat":"salary","desc":"שירן","date":"2026-06-16T09:00:00.000Z"},{"id":"17816027302427zit","type":"income","amount":400,"cat":"salary","desc":"ביסטריט","date":"2026-06-16T09:00:00.000Z"},{"id":"1781602699455p6hu","type":"income","amount":5705,"cat":"salary","desc":"קרן אור","date":"2026-06-16T09:00:00.000Z"},{"id":"1781602685592x5it","type":"income","amount":4625,"cat":"salary","desc":"מובמנט","date":"2026-06-16T09:00:00.000Z"},{"id":"17816026698386qv3","type":"income","amount":900,"cat":"salary","desc":"נופר","date":"2026-06-16T09:00:00.000Z"},{"id":"1781602658318ybyj","type":"income","amount":2800,"cat":"salary","desc":"יד חריף","date":"2026-06-16T09:00:00.000Z"},{"id":"17816026453388k9z","type":"income","amount":5500,"cat":"salary","desc":"רעים","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601743292wogq","type":"expense","amount":140,"cat":"transport","desc":"ביטוח חובה","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601707376pcmq","type":"expense","amount":430,"cat":"clothes","desc":"רנואר","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601660932xm7i","type":"expense","amount":495,"cat":"home","desc":"אייפון 17","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601610768hd22","type":"expense","amount":3000,"cat":"alimony","desc":"מזונות","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601532056o8pj","type":"expense","amount":968,"cat":"taxes","desc":"מעמ חוב","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601439492mf5p","type":"expense","amount":35,"cat":"home","desc":"תמי 4","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601367936ts78","type":"expense","amount":200,"cat":"home","desc":"חשמל","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601349366tdq4","type":"expense","amount":325,"cat":"home","desc":"ארנונה","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601314748e4e7","type":"expense","amount":1500,"cat":"taxes","desc":"מס הכנסה","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601255332ozqr","type":"expense","amount":1600,"cat":"insurance","desc":"ביטוח לאומי","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601237288q13w","type":"expense","amount":500,"cat":"kids","desc":"מיכאל תקציב","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601218412123u","type":"expense","amount":666,"cat":"kids","desc":"עומרי כדורסל","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601174246rk8i","type":"expense","amount":1000,"cat":"invest","desc":"מור השקעות","date":"2026-06-16T09:00:00.000Z"},{"id":"17816011112602t23","type":"expense","amount":2500,"cat":"credit","desc":"מקס חיצוני","date":"2026-06-16T09:00:00.000Z"},{"id":"1781601033338edz4","type":"expense","amount":7690,"cat":"home","desc":"שכר דירה","date":"2026-06-16T09:00:00.000Z"}]}};
+
+window.migrate = async () => {
+  const status = document.getElementById('status');
+  try {
+    status.textContent = 'מתחבר ל-Google…';
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const uid = result.user.uid;
+
+    status.textContent = 'מעלה הגדרות…';
+    await setDoc(doc(db, 'users', uid, 'settings'), { value: DATA.settings });
+
+    status.textContent = 'מעלה חיסכון…';
+    await setDoc(doc(db, 'users', uid, 'savings'), { value: DATA.savings });
+
+    status.textContent = 'מעלה תנועות יוני 2026…';
+    await setDoc(doc(db, 'users', uid, 'months', '2026-06'), { value: DATA.months['budget:tx:2026-06'] });
+
+    status.textContent = '✓ הנתונים הועלו בהצלחה! אפשר לסגור את הדף.';
+  } catch(e) {
+    status.textContent = 'שגיאה: ' + e.message;
+  }
+};
+</script>
+</body>
+</html>
