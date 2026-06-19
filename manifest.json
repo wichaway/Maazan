@@ -2,7 +2,7 @@
   "name": "המאזן שלי",
   "short_name": "המאזן",
   "description": "מעקב תקציב חודשי",
-  "start_url": "/Maazan/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ECEFED",
   "theme_color": "#1F6F5C",
