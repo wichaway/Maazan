@@ -43,13 +43,13 @@ window.migrate = async () => {
     const uid = result.user.uid;
 
     status.textContent = 'מעלה הגדרות…';
-    await setDoc(doc(db, 'users', uid, 'settings'), { value: DATA.settings });
+    await setDoc(doc(db, 'users', uid, 'budget', 'settings'), { value: DATA.settings });
 
     status.textContent = 'מעלה חיסכון…';
-    await setDoc(doc(db, 'users', uid, 'savings'), { value: DATA.savings });
+    await setDoc(doc(db, 'users', uid, 'budget', 'savings'), { value: DATA.savings });
 
     status.textContent = 'מעלה תנועות יוני 2026…';
-    await setDoc(doc(db, 'users', uid, 'months', '2026-06'), { value: DATA.months['budget:tx:2026-06'] });
+    await setDoc(doc(db, 'users', uid, 'budget', '2026-06'), { value: DATA.months['budget:tx:2026-06'] });
 
     status.textContent = '✓ הנתונים הועלו בהצלחה! אפשר לסגור את הדף.';
   } catch(e) {
