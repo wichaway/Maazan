@@ -176,7 +176,7 @@
 <!-- Firebase -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -259,14 +259,10 @@ function setSyncStatus(s) {
 const monthKey = m => m;
 
 // ── auth ───────────────────────────────────────────────────
-window.signInWithGoogle = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    await signInWithRedirect(auth, provider);
-  } catch(e) { toast('שגיאה בכניסה: ' + e.message); }
+window.signInWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth, provider).catch(e => toast('שגיאה: ' + e.message));
 };
-
-getRedirectResult(auth).catch(() => {});
 
 // Handle redirect result on page load (Safari)
 getRedirectResult(auth).then(result => {
