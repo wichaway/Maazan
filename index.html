@@ -276,7 +276,11 @@ window.doSignOut = async () => {
   await signOut(auth);
 };
 
+// Show login if Firebase takes too long
+const loadingTimeout = setTimeout(() => renderLogin(), 5000);
+
 onAuthStateChanged(auth, async user => {
+  clearTimeout(loadingTimeout);
   currentUser = user;
   if (user) {
     await init();
