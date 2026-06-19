@@ -173,6 +173,15 @@
 <div class="wrap" id="app"><div class="loading">טוען…</div></div>
 <div id="modal-root"></div>
 
+<!-- Fallback: show login if JS modules fail to load -->
+<script>
+setTimeout(() => {
+  if (document.getElementById('app').innerHTML.includes('טוען')) {
+    document.getElementById('app').innerHTML = '<div style="text-align:center;padding:40px;color:#B23A2E;font-family:sans-serif"><p>שגיאה בטעינה.<br>נסה לרענן את הדף.</p><button onclick="location.reload()" style="margin-top:16px;padding:12px 24px;background:#1F6F5C;color:#fff;border:none;border-radius:10px;font-size:1rem;cursor:pointer">רענן</button></div>';
+  }
+}, 8000);
+</script>
+
 <!-- Firebase -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
