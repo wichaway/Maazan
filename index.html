@@ -182,24 +182,22 @@ setTimeout(() => {
 }, 8000);
 </script>
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-const firebaseConfig = {
+<!-- Firebase compat SDK (works on all browsers including Safari) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
   apiKey: "AIzaSyABZObqzm7p80ifzbXIqbk1C_tAdLLNIlE",
   authDomain: "maazan-f82f6.firebaseapp.com",
   projectId: "maazan-f82f6",
   storageBucket: "maazan-f82f6.firebasestorage.app",
   messagingSenderId: "602042982070",
   appId: "1:602042982070:web:a826ba08e49b3730e59017"
-};
+});
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
 // ── constants ──────────────────────────────────────────────
 const ILS = new Intl.NumberFormat('he-IL',{style:'currency',currency:'ILS',maximumFractionDigits:0});
@@ -239,20 +237,20 @@ let unsubscribeSnapshot = null;
 
 // ── Firebase helpers ───────────────────────────────────────
 function userRef(key) {
-  return doc(db, 'users', currentUser.uid, 'budget', key);
+  return db.doc('users/' + currentUser.uid + '/budget/' + key);
 }
 
 async function fbGet(key) {
   try {
-    const snap = await getDoc(userRef(key));
-    return snap.exists() ? snap.data().value : null;
+    const snap = await userRef(key).get();
+    return snap.exists ? snap.data().value : null;
   } catch(e) { return null; }
 }
 
 async function fbSet(key, value) {
   setSyncStatus('syncing');
   try {
-    await setDoc(userRef(key), { value });
+    await userRef(key).set({ value });
     setSyncStatus('ok');
   } catch(e) { setSyncStatus('error'); }
 }
@@ -269,26 +267,19 @@ const monthKey = m => m;
 
 // ── auth ───────────────────────────────────────────────────
 window.signInWithGoogle = () => {
-  const provider = new GoogleAuthProvider();
-  signInWithPopup(auth, provider).catch(e => toast('שגיאה: ' + e.message));
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(e => toast('שגיאה: ' + e.message));
 };
-
-// Handle redirect result on page load (Safari)
-getRedirectResult(auth).then(result => {
-  if (result && result.user) {
-    // onAuthStateChanged will handle the rest
-  }
-}).catch(() => {});
 
 window.doSignOut = async () => {
   if (unsubscribeSnapshot) unsubscribeSnapshot();
-  await signOut(auth);
+  await auth.signOut();
 };
 
 // Show login if Firebase takes too long
 const loadingTimeout = setTimeout(() => renderLogin(), 5000);
 
-onAuthStateChanged(auth, async user => {
+auth.onAuthStateChanged(async user => {
   clearTimeout(loadingTimeout);
   currentUser = user;
   if (user) {
@@ -316,7 +307,7 @@ async function loadMonth() {
 function listenMonth() {
   if (unsubscribeSnapshot) unsubscribeSnapshot();
   const ref = userRef(state.month);
-  unsubscribeSnapshot = onSnapshot(ref, snap => {
+  unsubscribeSnapshot = ref.onSnapshot(snap => {
     if (snap.exists()) {
       const newTx = snap.data().value || [];
       state.tx = newTx;
