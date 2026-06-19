@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>המאזן שלי</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1F6F5C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="המאזן">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,11 +30,22 @@
   button{font-family:inherit;cursor:pointer;border:none}
   input,select{font-family:inherit;font-size:1rem}
 
-  header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;gap:12px}
+  /* Login screen */
+  .login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:20px;text-align:center}
+  .login-screen h1{font-size:2rem;font-weight:900}
+  .login-screen p{color:var(--muted);font-size:.95rem}
+  .btn-google{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 24px;font-size:1rem;font-weight:700;color:var(--ink);box-shadow:var(--shadow);cursor:pointer}
+  .btn-google svg{width:22px;height:22px}
+  .sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;color:var(--faint);background:var(--surface-2);border:1px solid var(--line);border-radius:99px;padding:3px 10px}
+  .sync-badge.syncing{color:var(--amber)}
+  .sync-badge.ok{color:var(--pos)}
+
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
   .brand{display:flex;align-items:baseline;gap:9px}
   .brand h1{font-size:1.55rem;font-weight:900;letter-spacing:-.01em}
   .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);align-self:center}
-  .tagline{color:var(--faint);font-size:.82rem}
+  .header-right{display:flex;align-items:center;gap:10px}
+  .user-avatar{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid var(--primary)}
 
   .monthnav{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px}
   .monthnav button{background:var(--surface);border:1px solid var(--line);width:38px;height:38px;border-radius:11px;color:var(--ink);font-size:1.2rem;display:grid;place-items:center;box-shadow:var(--shadow);transition:.15s}
@@ -40,7 +56,6 @@
   .card-title{font-size:1.02rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
   .eyebrow{font-family:"Assistant";font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:600}
 
-  /* Hero */
   .hero{background:linear-gradient(160deg,#1B5648,#143F35);color:#fff;border:none;position:relative;overflow:hidden}
   .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 90% -10%,rgba(176,135,31,.35),transparent 60%);pointer-events:none}
   .hero .eyebrow{color:rgba(255,255,255,.6)}
@@ -55,7 +70,6 @@
   .hero .io-acct{cursor:pointer;padding-right:18px;border-right:1px solid rgba(255,255,255,.18)}
   .hero .io-acct .v{color:#F0D89A}
 
-  /* Two-column tx list */
   .tx-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
   .tx-col-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
   .tx-col-card .col-title{font-weight:700;font-size:.95rem;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
@@ -80,7 +94,6 @@
   .tx .info:hover .editpen{opacity:1;color:var(--primary)}
   .empty{text-align:center;color:var(--faint);padding:18px 6px;font-size:.85rem}
 
-  /* Budget */
   .bar{height:14px;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;overflow:hidden}
   .bar .fill{height:100%;border-radius:99px;transition:width .5s ease,background .3s}
   .barmeta{display:flex;justify-content:space-between;font-size:.85rem;margin-top:9px;color:var(--muted)}
@@ -89,14 +102,12 @@
   .alert.warn{background:#FBF1DE;color:#9A6A12}
   .alert.over{background:#FBE9E6;color:var(--neg)}
 
-  /* Categories */
   .cat{margin-bottom:12px}.cat:last-child{margin-bottom:0}
   .cat .top{display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:5px}
   .cat .top .name{font-weight:600}
   .cat .top .vals{color:var(--muted)}
   .cat .top .vals b{color:var(--ink)}
 
-  /* Form */
   .seg{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:14px}
   .seg button{flex:1;padding:9px;border-radius:9px;background:transparent;color:var(--muted);font-weight:700;font-size:.92rem;transition:.15s}
   .seg button.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
@@ -113,7 +124,6 @@
   .btn-ghost{background:var(--surface-2);border:1px solid var(--line);color:var(--ink);padding:9px 14px;border-radius:10px;font-weight:600;font-size:.88rem;transition:.15s}
   .btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
 
-  /* Savings */
   .savings-total{font-family:"Frank Ruhl Libre",serif;font-size:2rem;font-weight:900;color:var(--gold)}
   .savings-sub{color:var(--muted);font-size:.88rem;margin-bottom:14px}
   .suggest{background:var(--surface-2);border:1px dashed var(--gold);border-radius:12px;padding:13px;margin-bottom:12px;font-size:.92rem}
@@ -122,10 +132,6 @@
   .chip{background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 13px;font-weight:600;font-size:.85rem;color:var(--ink);transition:.15s}
   .chip:hover{border-color:var(--gold);color:var(--gold)}
 
-  /* Tips */
-  .tip{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.92rem;color:var(--muted)}
-  .tip:last-child{border-bottom:none}
-  .tip .ic{color:var(--gold);font-weight:700;flex-shrink:0}
   .tip-hero{background:var(--surface-2);border-radius:12px;padding:14px;margin-bottom:14px;font-size:.96rem;line-height:1.55;border-right:3px solid var(--gold)}
   .tip-hero .label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;display:block;margin-bottom:5px}
 
@@ -137,7 +143,6 @@
   .foot{text-align:center;color:var(--faint);font-size:.78rem;margin-top:22px;line-height:1.6}
   .loading{text-align:center;padding:50px;color:var(--faint)}
 
-  /* Modal */
   .overlay{position:fixed;inset:0;background:rgba(21,33,30,.5);display:flex;align-items:flex-end;justify-content:center;z-index:50;animation:fade .15s ease}
   .modal{background:var(--surface);width:100%;max-width:680px;border-radius:20px 20px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -8px 40px rgba(21,33,30,.25);animation:slideup .2s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -151,7 +156,6 @@
     .hero .balance{font-size:2.4rem}
     body{padding:14px 10px 50px}
     .card{padding:16px}
-    .tx-cols{grid-template-columns:1fr 1fr}
     .tx .info .d{font-size:.78rem}
     .tx .info .m{font-size:.68rem}
     .tx .amt{font-size:.82rem}
@@ -160,7 +164,6 @@
     .tx-col-card .col-title{font-size:.82rem}
   }
 
-  /* כפתור סיבוב מסך */
   .rotate-btn{position:fixed;bottom:18px;left:18px;z-index:99;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;display:grid;place-items:center;box-shadow:0 4px 14px rgba(21,33,30,.25);cursor:pointer}
   .rotate-btn:hover{background:var(--primary-dark)}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -169,34 +172,43 @@
 <body>
 <div class="wrap" id="app"><div class="loading">טוען…</div></div>
 <div id="modal-root"></div>
-<script>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyABZObqzm7p80ifzbXIqbk1C_tAdLLNIlE",
+  authDomain: "maazan-f82f6.firebaseapp.com",
+  projectId: "maazan-f82f6",
+  storageBucket: "maazan-f82f6.firebasestorage.app",
+  messagingSenderId: "602042982070",
+  appId: "1:602042982070:web:a826ba08e49b3730e59017"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ── constants ──────────────────────────────────────────────
 const ILS = new Intl.NumberFormat('he-IL',{style:'currency',currency:'ILS',maximumFractionDigits:0});
 const MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-
 const EXPENSE_CATS = [
-  {id:'food',      name:'מזון וסופר',      icon:'🛒'},
-  {id:'home',      name:'דיור וחשבונות',   icon:'🏠'},
-  {id:'transport', name:'תחבורה',          icon:'🚗'},
-  {id:'shopping',  name:'קניות לבית',      icon:'🛍️'},
-  {id:'fun',       name:'בילויים',         icon:'🎉'},
-  {id:'health',    name:'בריאות',          icon:'💊'},
-  {id:'kids',      name:'ילדים',           icon:'👶'},
-  {id:'invest',    name:'השקעות',          icon:'📈'},
-  {id:'clothes',   name:'ביגוד והנעלה',    icon:'👟'},
-  {id:'insurance', name:'ביטוחים',         icon:'🛡️'},
-  {id:'credit',    name:'אשראי',           icon:'💳'},
-  {id:'alimony',   name:'מזונות',          icon:'👨‍👩‍👧'},
-  {id:'taxes',     name:'מיסים ממשלתיים',  icon:'🏛️'},
-  {id:'other',     name:'אחר',             icon:'📦'},
+  {id:'food',name:'מזון וסופר',icon:'🛒'},{id:'home',name:'דיור וחשבונות',icon:'🏠'},
+  {id:'transport',name:'תחבורה',icon:'🚗'},{id:'shopping',name:'קניות לבית',icon:'🛍️'},
+  {id:'fun',name:'בילויים',icon:'🎉'},{id:'health',name:'בריאות',icon:'💊'},
+  {id:'kids',name:'ילדים',icon:'👶'},{id:'invest',name:'השקעות',icon:'📈'},
+  {id:'clothes',name:'ביגוד והנעלה',icon:'👟'},{id:'insurance',name:'ביטוחים',icon:'🛡️'},
+  {id:'credit',name:'אשראי',icon:'💳'},{id:'alimony',name:'מזונות',icon:'👨‍👩‍👧'},
+  {id:'taxes',name:'מיסים ממשלתיים',icon:'🏛️'},{id:'other',name:'אחר',icon:'📦'},
 ];
 const INCOME_CATS = [
-  {id:'salary', name:'משכורת',     icon:'💼'},
-  {id:'lessons',name:'שיעורים',    icon:'📚'},
-  {id:'side',   name:'הכנסה צדדית',icon:'💡'},
-  {id:'other_i',name:'אחר',        icon:'💰'},
+  {id:'salary',name:'משכורת',icon:'💼'},{id:'lessons',name:'שיעורים',icon:'📚'},
+  {id:'side',name:'הכנסה צדדית',icon:'💡'},{id:'other_i',name:'אחר',icon:'💰'},
 ];
 const ALL_CATS = [...EXPENSE_CATS,...INCOME_CATS];
-
 const TIPS = [
   'בדוק מנויים חודשיים ששכחת מהם — סטרימינג, אפליקציות, חדר כושר.',
   'לפני קנייה גדולה, חכה 24 שעות. הרבה פעמים הרצון פשוט נעלם.',
@@ -206,68 +218,159 @@ const TIPS = [
   'מוצרי בסיס משתלם לקנות בכמויות כשיש מבצע.',
   'בדוק את חשבון החשמל והסלולר אחת לחצי שנה.',
   'הגדר תקציב לבילויים ומשוך אותו במזומן — כשנגמר, נגמר.',
+  'הוצאות קטנות כמו קפה ומשלוחים מצטברות מהר — עקוב אחריהן שבוע אחד ותופתע.',
 ];
 
+// ── state ──────────────────────────────────────────────────
 let state = {settings:null,month:null,tx:[],savings:0,accountBalance:null};
-let formType='expense';
+let currentUser = null;
+let formType = 'expense';
+let syncStatus = 'idle'; // idle | syncing | ok | error
+let unsubscribeSnapshot = null;
 
-const memStore={};
-const HAS_LS=(()=>{try{const k='__bt__';localStorage.setItem(k,'1');localStorage.removeItem(k);return true;}catch(e){return false;}})();
-const HAS_HOST=typeof window!=='undefined'&&window.storage;
-
-async function sget(k){try{if(HAS_LS){const v=localStorage.getItem(k);return v?JSON.parse(v):null;}if(HAS_HOST){const r=await window.storage.get(k);return r?JSON.parse(r.value):null;}return k in memStore?memStore[k]:null;}catch(e){return null;}}
-async function sset(k,v){try{if(HAS_LS){localStorage.setItem(k,JSON.stringify(v));return;}if(HAS_HOST){await window.storage.set(k,JSON.stringify(v));return;}memStore[k]=v;}catch(e){console.error(e);}}
-async function slist(p){try{if(HAS_LS){return Object.keys(localStorage).filter(k=>k.startsWith(p));}if(HAS_HOST){const r=await window.storage.list(p);return(r&&r.keys)||[];}return Object.keys(memStore).filter(k=>k.startsWith(p));}catch(e){return[];}}
-const monthKey=m=>'budget:tx:'+m;
-
-async function init(){
-  const now=new Date();
-  state.month=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  state.settings=await sget('budget:settings')||{monthlyBudget:0,savingsGoal:0,catLimits:{},accountSet:false,openingBalance:0,openingDate:null};
-  state.savings=(await sget('budget:savings'))??0;
-  await loadMonth();await rerender();
-}
-async function loadMonth(){state.tx=await sget(monthKey(state.month))||[];}
-async function rerender(){await recomputeAccount();render();}
-async function recomputeAccount(){
-  const s=state.settings;
-  if(!s.accountSet){state.accountBalance=null;return;}
-  let sum=s.openingBalance||0;
-  const since=s.openingDate?new Date(s.openingDate):new Date(0);
-  try{
-    const keys=await slist('budget:tx:');
-    for(const k of keys){const arr=(k===monthKey(state.month))?state.tx:(await sget(k)||[]);for(const t of arr){if(new Date(t.date)>=since){sum+=t.type==='income'?t.amount:-t.amount;}}}
-  }catch(e){for(const t of state.tx){if(new Date(t.date)>=since){sum+=t.type==='income'?t.amount:-t.amount;}}}
-  state.accountBalance=Math.round(sum*100)/100;
+// ── Firebase helpers ───────────────────────────────────────
+function userRef(path) {
+  return doc(db, 'users', currentUser.uid, ...path.split('/'));
 }
 
-async function addTx(t){state.tx.unshift(t);await sset(monthKey(state.month),state.tx);await rerender();}
-async function delTx(id){state.tx=state.tx.filter(t=>t.id!==id);await sset(monthKey(state.month),state.tx);await rerender();}
-async function editTx(id,changes){state.tx=state.tx.map(t=>t.id===id?{...t,...changes}:t);await sset(monthKey(state.month),state.tx);await rerender();}
-async function saveSettings(s){state.settings={...state.settings,...s};await sset('budget:settings',state.settings);await rerender();}
-async function addSavings(amt){state.savings=Math.max(0,Math.round((state.savings+amt)*100)/100);await sset('budget:savings',state.savings);render();}
-async function setAccountBalance(val){state.settings={...state.settings,accountSet:true,openingBalance:Math.round(val*100)/100,openingDate:new Date(todayStr()+'T00:00:00').toISOString()};await sset('budget:settings',state.settings);await rerender();}
-async function changeMonth(d){let[y,m]=state.month.split('-').map(Number);m+=d;if(m<1){m=12;y--}if(m>12){m=1;y++}state.month=y+'-'+String(m).padStart(2,'0');await loadMonth();await rerender();}
+async function fbGet(key) {
+  try {
+    const snap = await getDoc(userRef(key));
+    return snap.exists() ? snap.data().value : null;
+  } catch(e) { return null; }
+}
 
-function totals(){
-  let inc=0,exp=0;const byCat={};
+async function fbSet(key, value) {
+  setSyncStatus('syncing');
+  try {
+    await setDoc(userRef(key), { value });
+    setSyncStatus('ok');
+  } catch(e) { setSyncStatus('error'); }
+}
+
+function setSyncStatus(s) {
+  syncStatus = s;
+  const el = document.getElementById('sync-badge');
+  if (!el) return;
+  el.className = 'sync-badge ' + (s === 'syncing' ? 'syncing' : s === 'ok' ? 'ok' : '');
+  el.textContent = s === 'syncing' ? '⟳ מסנכרן…' : s === 'ok' ? '✓ מסונכרן' : '☁ ענן';
+}
+
+const monthKey = m => 'months/' + m;
+
+// ── auth ───────────────────────────────────────────────────
+window.signInWithGoogle = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  } catch(e) { toast('שגיאה בכניסה: ' + e.message); }
+};
+
+window.doSignOut = async () => {
+  if (unsubscribeSnapshot) unsubscribeSnapshot();
+  await signOut(auth);
+};
+
+onAuthStateChanged(auth, async user => {
+  currentUser = user;
+  if (user) {
+    await init();
+  } else {
+    renderLogin();
+  }
+});
+
+// ── init ───────────────────────────────────────────────────
+async function init() {
+  const now = new Date();
+  state.month = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  state.settings = await fbGet('settings') || {monthlyBudget:0,savingsGoal:0,catLimits:{},accountSet:false,openingBalance:0,openingDate:null};
+  state.savings = (await fbGet('savings')) ?? 0;
+  await loadMonth();
+  await rerender();
+  listenMonth();
+}
+
+async function loadMonth() {
+  state.tx = (await fbGet(monthKey(state.month))) || [];
+}
+
+function listenMonth() {
+  if (unsubscribeSnapshot) unsubscribeSnapshot();
+  const ref = userRef(monthKey(state.month));
+  unsubscribeSnapshot = onSnapshot(ref, snap => {
+    if (snap.exists()) {
+      const newTx = snap.data().value || [];
+      state.tx = newTx;
+      rerender();
+    }
+  });
+}
+
+async function rerender() { await recomputeAccount(); render(); }
+
+async function recomputeAccount() {
+  const s = state.settings;
+  if (!s.accountSet) { state.accountBalance = null; return; }
+  let sum = s.openingBalance || 0;
+  const since = s.openingDate ? new Date(s.openingDate) : new Date(0);
+  for (const t of state.tx) {
+    if (new Date(t.date) >= since) sum += t.type === 'income' ? t.amount : -t.amount;
+  }
+  state.accountBalance = Math.round(sum * 100) / 100;
+}
+
+// ── data ops ───────────────────────────────────────────────
+async function addTx(t) { state.tx.unshift(t); await fbSet(monthKey(state.month), state.tx); await rerender(); }
+async function delTx(id) { state.tx = state.tx.filter(t => t.id !== id); await fbSet(monthKey(state.month), state.tx); await rerender(); }
+async function editTx(id, changes) { state.tx = state.tx.map(t => t.id===id ? {...t,...changes} : t); await fbSet(monthKey(state.month), state.tx); await rerender(); }
+async function saveSettings(s) { state.settings = {...state.settings,...s}; await fbSet('settings', state.settings); await rerender(); }
+async function addSavings(amt) { state.savings = Math.max(0, Math.round((state.savings+amt)*100)/100); await fbSet('savings', state.savings); render(); }
+async function setAccountBalance(val) { state.settings = {...state.settings,accountSet:true,openingBalance:Math.round(val*100)/100,openingDate:new Date(todayStr()+'T00:00:00').toISOString()}; await fbSet('settings', state.settings); await rerender(); }
+
+window.changeMonth = async d => {
+  let [y,m] = state.month.split('-').map(Number);
+  m += d; if(m<1){m=12;y--} if(m>12){m=1;y++}
+  state.month = y+'-'+String(m).padStart(2,'0');
+  await loadMonth(); await rerender(); listenMonth();
+};
+
+// ── render ─────────────────────────────────────────────────
+function renderLogin() {
+  document.getElementById('app').innerHTML = `
+    <div class="login-screen">
+      <div class="brand" style="justify-content:center"><span class="dot"></span><h1>המאזן שלי</h1></div>
+      <p>מעקב תקציב חודשי, מסונכרן בין כל המכשירים שלך</p>
+      <button class="btn-google" onclick="signInWithGoogle()">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        כניסה עם Google
+      </button>
+    </div>`;
+}
+
+function totals() {
+  let inc=0,exp=0; const byCat={};
   for(const t of state.tx){if(t.type==='income')inc+=t.amount;else{exp+=t.amount;byCat[t.cat]=(byCat[t.cat]||0)+t.amount;}}
   return{inc,exp,balance:inc-exp,byCat};
 }
 
-function render(){
-  const{inc,exp,balance,byCat}=totals();
-  const[y,m]=state.month.split('-').map(Number);
-  const s=state.settings;
-  const budget=s.monthlyBudget||0;
-  const ratio=budget>0?exp/budget:0;
-  const incTx=state.tx.filter(t=>t.type==='income').sort((a,b)=>b.amount-a.amount);
-  const expTx=state.tx.filter(t=>t.type==='expense').sort((a,b)=>b.amount-a.amount);
+function render() {
+  const {inc,exp,balance,byCat} = totals();
+  const [y,m] = state.month.split('-').map(Number);
+  const s = state.settings;
+  const budget = s.monthlyBudget||0;
+  const ratio = budget>0 ? exp/budget : 0;
+  const incTx = state.tx.filter(t=>t.type==='income').sort((a,b)=>b.amount-a.amount);
+  const expTx = state.tx.filter(t=>t.type==='expense').sort((a,b)=>b.amount-a.amount);
+  const u = currentUser;
 
-  document.getElementById('app').innerHTML=`
+  document.getElementById('app').innerHTML = `
     <header>
       <div class="brand"><span class="dot"></span><h1>המאזן שלי</h1></div>
-      <span class="tagline">מעקב חודשי, בלי הפתעות</span>
+      <div class="header-right">
+        <span id="sync-badge" class="sync-badge">☁ ענן</span>
+        ${u.photoURL ? `<img class="user-avatar" src="${u.photoURL}" onclick="doSignOut()" title="יציאה">` : `<button class="btn-ghost" onclick="doSignOut()" style="font-size:.8rem;padding:6px 10px">יציאה</button>`}
+      </div>
     </header>
     <div class="monthnav">
       <button onclick="changeMonth(-1)">›</button>
@@ -275,7 +378,6 @@ function render(){
       <button onclick="changeMonth(1)">‹</button>
     </div>
 
-    <!-- HERO -->
     <div class="card hero">
       <span class="eyebrow">השורה התחתונה של החודש</span>
       <div class="ledger-line"></div>
@@ -291,13 +393,11 @@ function render(){
       </div>
     </div>
 
-    <!-- BUDGET -->
     <div class="card">
       <div class="card-title"><span>תקציב חודשי</span>${budget>0?`<span class="eyebrow num">${ILS.format(exp)} מתוך ${ILS.format(budget)}</span>`:''}</div>
       ${budget>0?budgetView(exp,budget,ratio):`<p style="color:var(--muted);font-size:.92rem;margin-bottom:12px">הגדר תקרת הוצאות חודשית כדי לעקוב.</p><button class="btn-ghost" onclick="document.getElementById('settings').open=true">הגדר תקציב</button>`}
     </div>
 
-    <!-- ADD TX -->
     <div class="card">
       <div class="card-title"><span>הוספת תנועה</span></div>
       <div class="seg">
@@ -313,7 +413,6 @@ function render(){
       <button class="btn-primary" onclick="submitTx()">${formType==='expense'?'הוסף הוצאה':'הוסף הכנסה'}</button>
     </div>
 
-    <!-- TWO-COLUMN TX LIST -->
     <div class="tx-cols">
       <div class="tx-col-card col-inc">
         <div class="col-title"><span>💰 הכנסות</span><span class="total num">${ILS.format(inc)}</span></div>
@@ -325,7 +424,6 @@ function render(){
       </div>
     </div>
 
-    <!-- CATEGORIES -->
     ${exp>0?`<div class="card">
       <div class="card-title"><span>לאן הלך הכסף</span></div>
       ${EXPENSE_CATS.filter(c=>byCat[c.id]).sort((a,b)=>byCat[b.id]-byCat[a.id]).map(c=>{
@@ -336,7 +434,6 @@ function render(){
       }).join('')}
     </div>`:''}
 
-    <!-- SAVINGS -->
     <div class="card">
       <div class="card-title"><span>קופת חיסכון</span>${s.savingsGoal>0?`<span class="eyebrow num">יעד ${ILS.format(s.savingsGoal)}</span>`:''}</div>
       <div class="savings-total num">${ILS.format(state.savings)}</div>
@@ -350,16 +447,14 @@ function render(){
         </div></div>`:`<div class="chip-row"><button class="chip" onclick="customSavings()">הוסף לחיסכון</button>${state.savings>0?`<button class="chip" onclick="customSavings(true)">משיכה</button>`:''}</div>`}
     </div>
 
-    <!-- TIPS -->
     <div class="card">
       <div class="card-title"><span>טיפ לחיסכון</span></div>
       <div class="tip-hero"><span class="label">הטיפ של היום</span>${TIPS[(y*12+m)%TIPS.length]}</div>
     </div>
 
-    <!-- DATA -->
     <div class="card">
       <div class="card-title"><span>גיבוי ונתונים</span></div>
-      <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">שמור גיבוי של הנתונים שלך — כך תמיד תוכל לשחזר אותם.</p>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">הנתונים שלך מסונכרנים לענן אוטומטית. ניתן גם לייצא גיבוי ידני.</p>
       <div class="chip-row">
         <button class="chip" onclick="showDataText()">📋 גיבוי JSON</button>
         <button class="chip" onclick="showCSVText()">📋 גיבוי CSV</button>
@@ -367,7 +462,6 @@ function render(){
       </div>
     </div>
 
-    <!-- SETTINGS -->
     <div class="card">
       <details id="settings">
         <summary>הגדרות תקציב</summary>
@@ -382,61 +476,29 @@ function render(){
       </details>
     </div>
 
-    <div class="foot">הנתונים נשמרים אצלך ונשארים בין הביקורים.</div>
+    <div class="foot">הנתונים שלך מסונכרנים בענן ומוגנים עם חשבון Google שלך.</div>
   `;
-  // כפתור סיבוב מסך — רק במובייל
+
+  setSyncStatus(syncStatus);
+
   if(/Mobi|Android|iPhone/i.test(navigator.userAgent)){
     const btn = document.createElement('button');
-    btn.className='rotate-btn';
-    btn.title='עבור למצב רוחב';
-    btn.innerHTML='⟳';
-    btn.onclick=()=>{
-      if(screen.orientation && screen.orientation.lock){
-        const cur = screen.orientation.type;
-        const target = cur.includes('landscape') ? 'portrait' : 'landscape';
-        screen.orientation.lock(target).catch(()=>toast('הפוך את הטלפון ידנית 📱'));
-      } else {
-        toast('הפוך את הטלפון ידנית 📱');
-      }
-    };
+    btn.className='rotate-btn'; btn.title='עבור למצב רוחב'; btn.innerHTML='⟳';
+    btn.onclick=()=>{if(screen.orientation&&screen.orientation.lock){const cur=screen.orientation.type;const target=cur.includes('landscape')?'portrait':'landscape';screen.orientation.lock(target).catch(()=>toast('הפוך את הטלפון ידנית 📱'));}else{toast('הפוך את הטלפון ידנית 📱');}};
     document.body.appendChild(btn);
   }
 }
 
-function balanceStatus(bal,inc,exp){
-  if(inc===0&&exp===0)return'הוסף תנועות כדי לראות איפה אתה עומד.';
-  if(bal>0)return`יפה! נשארת עם עודף החודש.`;
-  if(bal===0)return'אתה בדיוק על אפס.';
-  return'ההוצאות עלו על ההכנסות. כדאי לבדוק את הקטגוריות.';
-}
-function budgetView(exp,budget,ratio){
-  const col=ratio>1?'var(--neg)':ratio>.85?'var(--amber)':'var(--primary)';
-  const left=budget-exp;
-  let alert;
-  if(ratio>1)alert=`<div class="alert over"><span>⚠</span><span>חרגת מהתקציב ב-${ILS.format(exp-budget)}.</span></div>`;
-  else if(ratio>=.85)alert=`<div class="alert warn"><span>⚡</span><span>נשארו רק ${ILS.format(left)} — היזהר עם הוצאות גדולות.</span></div>`;
-  else alert=`<div class="alert ok"><span>✓</span><span>בתוך התקציב. נשארו ${ILS.format(left)}.</span></div>`;
-  return`<div class="bar"><div class="fill" style="width:${Math.min(ratio*100,100)}%;background:${col}"></div></div><div class="barmeta"><span class="num">${Math.round(ratio*100)}% נוצל</span><span class="num">${left>=0?'נשאר '+ILS.format(left):'חריגה '+ILS.format(-left)}</span></div>${alert}`;
-}
-function savingsSub(goal){
-  if(goal>0){const pct=Math.round(state.savings/goal*100);if(state.savings>=goal)return'הגעת ליעד! 🎉';return`${pct}% מהדרך — עוד ${ILS.format(goal-state.savings)}.`;}
-  return'סך הכל שצברת בחיסכון.';
-}
-function txRow(t){
-  const cat=ALL_CATS.find(c=>c.id===t.cat)||{icon:'•',name:''};
-  const d=new Date(t.date);
-  const ds=d.getDate()+' ב'+MONTHS[d.getMonth()];
-  return`<div class="tx">
-    <div class="tag" onclick="openEdit('${t.id}')">${cat.icon}</div>
-    <div class="info" onclick="openEdit('${t.id}')"><div class="d">${t.desc||cat.name} <span class="editpen">✎</span></div><div class="m">${cat.name} · ${ds}</div></div>
-    <div class="amt num ${t.type==='income'?'inc':'exp'}" onclick="openEdit('${t.id}')">${t.type==='income'?'+':'−'}${ILS.format(t.amount)}</div>
-    <button class="del" onclick="delTx('${t.id}')">✕</button>
-  </div>`;
-}
+// ── helpers ────────────────────────────────────────────────
+function balanceStatus(bal,inc,exp){if(inc===0&&exp===0)return'הוסף תנועות כדי לראות איפה אתה עומד.';if(bal>0)return'יפה! נשארת עם עודף החודש.';if(bal===0)return'אתה בדיוק על אפס.';return'ההוצאות עלו על ההכנסות. כדאי לבדוק את הקטגוריות.';}
+function budgetView(exp,budget,ratio){const col=ratio>1?'var(--neg)':ratio>.85?'var(--amber)':'var(--primary)';const left=budget-exp;let alert;if(ratio>1)alert=`<div class="alert over"><span>⚠</span><span>חרגת מהתקציב ב-${ILS.format(exp-budget)}.</span></div>`;else if(ratio>=.85)alert=`<div class="alert warn"><span>⚡</span><span>נשארו רק ${ILS.format(left)} — היזהר עם הוצאות גדולות.</span></div>`;else alert=`<div class="alert ok"><span>✓</span><span>בתוך התקציב. נשארו ${ILS.format(left)}.</span></div>`;return`<div class="bar"><div class="fill" style="width:${Math.min(ratio*100,100)}%;background:${col}"></div></div><div class="barmeta"><span class="num">${Math.round(ratio*100)}% נוצל</span><span class="num">${left>=0?'נשאר '+ILS.format(left):'חריגה '+ILS.format(-left)}</span></div>${alert}`;}
+function savingsSub(goal){if(goal>0){const pct=Math.round(state.savings/goal*100);if(state.savings>=goal)return'הגעת ליעד! 🎉';return`${pct}% מהדרך — עוד ${ILS.format(goal-state.savings)}.`;}return'סך הכל שצברת בחיסכון.';}
+function txRow(t){const cat=ALL_CATS.find(c=>c.id===t.cat)||{icon:'•',name:''};const d=new Date(t.date);const ds=d.getDate()+' ב'+MONTHS[d.getMonth()];return`<div class="tx"><div class="tag" onclick="openEdit('${t.id}')">${cat.icon}</div><div class="info" onclick="openEdit('${t.id}')"><div class="d">${t.desc||cat.name} <span class="editpen">✎</span></div><div class="m">${cat.name} · ${ds}</div></div><div class="amt num ${t.type==='income'?'inc':'exp'}" onclick="openEdit('${t.id}')">${t.type==='income'?'+':'−'}${ILS.format(t.amount)}</div><button class="del" onclick="delTx('${t.id}')">✕</button></div>`;}
 
-function setType(t){formType=t;render();}
+window.setType = t => { formType=t; render(); };
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function submitTx(){
+
+window.submitTx = () => {
   const amt=parseFloat(document.getElementById('f-amt').value);
   if(!amt||amt<=0){toast('צריך להזין סכום חיובי');return;}
   const cat=document.getElementById('f-cat').value;
@@ -444,8 +506,9 @@ function submitTx(){
   const dval=document.getElementById('f-date').value;
   const date=dval?new Date(dval+'T12:00:00').toISOString():new Date().toISOString();
   addTx({id:Date.now()+''+Math.random().toString(36).slice(2,6),type:formType,amount:Math.round(amt*100)/100,cat,desc,date});
-}
-function submitSettings(){
+};
+
+window.submitSettings = () => {
   const budget=parseFloat(document.getElementById('set-budget').value)||0;
   const goal=parseFloat(document.getElementById('set-goal').value)||0;
   const catLimits={};
@@ -454,131 +517,64 @@ function submitSettings(){
   const extra={};
   if(accRaw!==''){const a=parseFloat(accRaw);if(!isNaN(a)){extra.accountSet=true;extra.openingBalance=Math.round(a*100)/100;extra.openingDate=new Date(todayStr()+'T00:00:00').toISOString();}}
   saveSettings({monthlyBudget:budget,savingsGoal:goal,catLimits,...extra});
-}
-function customSavings(w){
-  promptModal({title:w?'משיכה מהחיסכון':'הוספה לחיסכון',label:w?'כמה למשוך? (₪)':'כמה להוסיף? (₪)',value:'',confirmText:w?'משוך':'הוסף',onConfirm:(v)=>{if(v&&v>0)addSavings(w?-v:v);}});
-}
-function updateBalance(){
-  promptModal({title:'עדכון יתרת חשבון',label:'מה היתרה הנוכחית בחשבון? (₪)',hint:'כל תנועה שתוסיף מכאן תעדכן אותה אוטומטית.',value:state.accountBalance!==null?state.accountBalance:'',confirmText:'שמור יתרה',onConfirm:(v)=>{if(v!==null)setAccountBalance(v);}});
-}
+};
 
-/* Prompt modal */
+window.customSavings = w => { promptModal({title:w?'משיכה מהחיסכון':'הוספה לחיסכון',label:w?'כמה למשוך? (₪)':'כמה להוסיף? (₪)',value:'',confirmText:w?'משוך':'הוסף',onConfirm:(v)=>{if(v&&v>0)addSavings(w?-v:v);}}); };
+window.updateBalance = () => { promptModal({title:'עדכון יתרת חשבון',label:'מה היתרה הנוכחית בחשבון? (₪)',hint:'כל תנועה שתוסיף מכאן תעדכן אותה אוטומטית.',value:state.accountBalance!==null?state.accountBalance:'',confirmText:'שמור יתרה',onConfirm:(v)=>{if(v!==null)setAccountBalance(v);}}); };
+window.addSavings = addSavings;
+window.delTx = delTx;
+
 let pmCb=null;
-function promptModal(o){
+window.promptModal = o => {
   pmCb=o.onConfirm;
-  document.getElementById('modal-root').innerHTML=`
-    <div class="overlay" onclick="if(event.target===this)closePM()">
-      <div class="modal">
-        <div class="card-title"><span>${o.title}</span><button class="del" onclick="closePM()">✕</button></div>
-        <div class="field"><label>${o.label}</label><input id="pm-input" type="number" inputmode="decimal" step="any" value="${o.value}"></div>
-        ${o.hint?`<p style="font-size:.8rem;color:var(--faint);margin:-4px 0 14px">${o.hint}</p>`:''}
-        <button class="btn-primary" onclick="confirmPM()">${o.confirmText||'אישור'}</button>
-      </div>
-    </div>`;
+  document.getElementById('modal-root').innerHTML=`<div class="overlay" onclick="if(event.target===this)closePM()"><div class="modal"><div class="card-title"><span>${o.title}</span><button class="del" onclick="closePM()">✕</button></div><div class="field"><label>${o.label}</label><input id="pm-input" type="number" inputmode="decimal" step="any" value="${o.value}"></div>${o.hint?`<p style="font-size:.8rem;color:var(--faint);margin:-4px 0 14px">${o.hint}</p>`:''}<button class="btn-primary" onclick="confirmPM()">${o.confirmText||'אישור'}</button></div></div>`;
   document.body.style.overflow='hidden';
   const inp=document.getElementById('pm-input');inp.focus();
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')confirmPM();});
-}
-function confirmPM(){const raw=document.getElementById('pm-input').value;const v=parseFloat(raw);const cb=pmCb;closePM();if(cb)cb(isNaN(v)?null:v);}
-function closePM(){document.getElementById('modal-root').innerHTML='';document.body.style.overflow='';pmCb=null;}
-function toast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;document.body.appendChild(el);requestAnimationFrame(()=>el.classList.add('show'));setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),250);},2600);}
+};
+window.confirmPM = () => { const raw=document.getElementById('pm-input').value;const v=parseFloat(raw);const cb=pmCb;closePM();if(cb)cb(isNaN(v)?null:v); };
+window.closePM = () => { document.getElementById('modal-root').innerHTML='';document.body.style.overflow='';pmCb=null; };
 
-/* Edit modal */
+function toast(msg){const el=document.createElement('div');el.className='toast';el.textContent=msg;document.body.appendChild(el);requestAnimationFrame(()=>el.classList.add('show'));setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),250);},2600);}
+window.toast = toast;
+
 let editId=null,editType='expense';
-function openEdit(id){
+window.openEdit = id => {
   const t=state.tx.find(x=>x.id===id);if(!t)return;
   editId=id;editType=t.type;
-  const d=new Date(t.date);
-  const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  document.getElementById('modal-root').innerHTML=`
-    <div class="overlay" onclick="if(event.target===this)closeEdit()">
-      <div class="modal">
-        <div class="card-title"><span>עריכת תנועה</span><button class="del" onclick="closeEdit()">✕</button></div>
-        <div class="seg" id="m-seg">
-          <button class="${t.type==='expense'?'active exp':''}" onclick="setEditType('expense')">הוצאה −</button>
-          <button class="${t.type==='income'?'active inc':''}" onclick="setEditType('income')">הכנסה +</button>
-        </div>
-        <div class="row">
-          <div class="field"><label>סכום (₪)</label><input id="m-amt" type="number" inputmode="decimal" min="0" value="${t.amount}"></div>
-          <div class="field"><label>קטגוריה</label><select id="m-cat"></select></div>
-        </div>
-        <div class="field"><label>תיאור</label><input id="m-desc" type="text" value="${(t.desc||'').replace(/"/g,'&quot;')}"></div>
-        <div class="field"><label>תאריך</label><input id="m-date" type="date" value="${ds}"></div>
-        <div class="row">
-          <button class="btn-primary" style="flex:2" onclick="saveEdit()">שמור</button>
-          <button class="btn-ghost" style="flex:1;color:var(--neg);border-color:#F0C9C2" onclick="delTx('${id}');closeEdit()">מחק</button>
-        </div>
-      </div>
-    </div>`;
-  fillEditCats(t.cat);
-  document.body.style.overflow='hidden';
-}
-function setEditType(tp){editType=tp;document.querySelectorAll('#m-seg button').forEach((b,i)=>{b.className=(i===0&&tp==='expense')?'active exp':(i===1&&tp==='income')?'active inc':'';});fillEditCats();}
+  const d=new Date(t.date);const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  document.getElementById('modal-root').innerHTML=`<div class="overlay" onclick="if(event.target===this)closeEdit()"><div class="modal"><div class="card-title"><span>עריכת תנועה</span><button class="del" onclick="closeEdit()">✕</button></div><div class="seg" id="m-seg"><button class="${t.type==='expense'?'active exp':''}" onclick="setEditType('expense')">הוצאה −</button><button class="${t.type==='income'?'active inc':''}" onclick="setEditType('income')">הכנסה +</button></div><div class="row"><div class="field"><label>סכום (₪)</label><input id="m-amt" type="number" inputmode="decimal" min="0" value="${t.amount}"></div><div class="field"><label>קטגוריה</label><select id="m-cat"></select></div></div><div class="field"><label>תיאור</label><input id="m-desc" type="text" value="${(t.desc||'').replace(/"/g,'&quot;')}"></div><div class="field"><label>תאריך</label><input id="m-date" type="date" value="${ds}"></div><div class="row"><button class="btn-primary" style="flex:2" onclick="saveEdit()">שמור</button><button class="btn-ghost" style="flex:1;color:var(--neg);border-color:#F0C9C2" onclick="delTx('${id}');closeEdit()">מחק</button></div></div></div>`;
+  fillEditCats(t.cat);document.body.style.overflow='hidden';
+};
+window.setEditType = tp => { editType=tp;document.querySelectorAll('#m-seg button').forEach((b,i)=>{b.className=(i===0&&tp==='expense')?'active exp':(i===1&&tp==='income')?'active inc':'';});fillEditCats(); };
 function fillEditCats(sel){const cats=editType==='expense'?EXPENSE_CATS:INCOME_CATS;document.getElementById('m-cat').innerHTML=cats.map(c=>`<option value="${c.id}" ${c.id===sel?'selected':''}>${c.icon} ${c.name}</option>`).join('');}
-function saveEdit(){
+window.saveEdit = () => {
   const amt=parseFloat(document.getElementById('m-amt').value);
   if(!amt||amt<=0){toast('צריך להזין סכום חיובי');return;}
   const dval=document.getElementById('m-date').value;
   editTx(editId,{type:editType,amount:Math.round(amt*100)/100,cat:document.getElementById('m-cat').value,desc:document.getElementById('m-desc').value.trim(),date:dval?new Date(dval+'T12:00:00').toISOString():new Date().toISOString()});
   closeEdit();
-}
-function closeEdit(){document.getElementById('modal-root').innerHTML='';document.body.style.overflow='';editId=null;}
+};
+window.closeEdit = () => { document.getElementById('modal-root').innerHTML='';document.body.style.overflow='';editId=null; };
 
-/* Data export — text display only (no file download in artifact env) */
-async function getAllData(){
-  const data={settings:state.settings,savings:state.savings,months:{}};
-  try{const keys=await slist('budget:tx:');for(const k of keys){const arr=await sget(k);if(arr)data.months[k]=arr;}}catch(e){data.months[monthKey(state.month)]=state.tx;}
-  return data;
-}
-async function showDataText(){
-  const data=await getAllData();
-  const json=JSON.stringify(data,null,2);
-  showTextModal('גיבוי JSON — העתק ושמור',json);
-}
-async function showCSVText(){
-  const data=await getAllData();
+window.showDataText = async () => { showTextModal('גיבוי JSON — העתק ושמור', JSON.stringify({settings:state.settings,savings:state.savings,months:{[monthKey(state.month)]:state.tx}},null,2)); };
+window.showCSVText = async () => {
   const rows=[['תאריך','סוג','קטגוריה','תיאור','סכום']];
-  for(const k in data.months){
-    const txs=[...data.months[k]].sort((a,b)=>new Date(a.date)-new Date(b.date));
-    for(const t of txs){
-      const c=ALL_CATS.find(x=>x.id===t.cat);
-      rows.push([new Date(t.date).toLocaleDateString('he-IL'),t.type==='income'?'הכנסה':'הוצאה',c?c.name:'',t.desc||'',t.amount]);
-    }
-  }
-  const csv=rows.map(r=>r.join(',')).join('\n');
-  showTextModal('גיבוי CSV — העתק לאקסל',csv);
-}
-function showTextModal(title,text){
-  document.getElementById('modal-root').innerHTML=`
-    <div class="overlay" onclick="if(event.target===this)closePM()">
-      <div class="modal">
-        <div class="card-title"><span>${title}</span><button class="del" onclick="closePM()">✕</button></div>
-        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">העתק את הטקסט הבא ושמור אותו:</p>
-        <textarea readonly onclick="this.select()" style="width:100%;height:220px;font-size:.72rem;font-family:monospace;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface-2);color:var(--ink);resize:none">${text}</textarea>
-        <button class="btn-primary" style="margin-top:12px" onclick="navigator.clipboard.writeText(${JSON.stringify(text)}).then(()=>toast('הועתק!')).catch(()=>toast('סמן את הטקסט והעתק ידנית'))">📋 העתק ללוח</button>
-      </div>
-    </div>`;
-  document.body.style.overflow='hidden';
-}
-function importBackup(){
+  const txs=[...state.tx].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  for(const t of txs){const c=ALL_CATS.find(x=>x.id===t.cat);rows.push([new Date(t.date).toLocaleDateString('he-IL'),t.type==='income'?'הכנסה':'הוצאה',c?c.name:'',t.desc||'',t.amount]);}
+  showTextModal('גיבוי CSV — העתק לאקסל', rows.map(r=>r.join(',')).join('\n'));
+};
+function showTextModal(title,text){document.getElementById('modal-root').innerHTML=`<div class="overlay" onclick="if(event.target===this)closePM()"><div class="modal"><div class="card-title"><span>${title}</span><button class="del" onclick="closePM()">✕</button></div><p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">העתק את הטקסט הבא ושמור אותו:</p><textarea readonly onclick="this.select()" style="width:100%;height:220px;font-size:.72rem;font-family:monospace;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface-2);color:var(--ink);resize:none">${text}</textarea><button class="btn-primary" style="margin-top:12px" onclick="navigator.clipboard.writeText(${JSON.stringify(text)}).then(()=>toast('הועתק!')).catch(()=>toast('סמן את הטקסט והעתק ידנית'))">📋 העתק ללוח</button></div></div>`;document.body.style.overflow='hidden';}
+window.importBackup = () => {
   const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';
-  inp.onchange=async()=>{
-    const file=inp.files[0];if(!file)return;
-    try{
-      const data=JSON.parse(await file.text());
-      if(data.settings)await sset('budget:settings',data.settings);
-      if(typeof data.savings==='number')await sset('budget:savings',data.savings);
-      if(data.months){for(const k in data.months){await sset(k,data.months[k]);}}
-      state.settings=await sget('budget:settings')||state.settings;
-      state.savings=(await sget('budget:savings'))??0;
-      await loadMonth();await rerender();
-      toast('הגיבוי שוחזר בהצלחה');
-    }catch(e){toast('הקובץ לא תקין');}
-  };
+  inp.onchange=async()=>{const file=inp.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.settings)await fbSet('settings',data.settings);if(typeof data.savings==='number')await fbSet('savings',data.savings);if(data.months){for(const k in data.months){await fbSet(k,data.months[k]);}}state.settings=await fbGet('settings')||state.settings;state.savings=(await fbGet('savings'))??0;await loadMonth();await rerender();toast('הגיבוי שוחזר בהצלחה');}catch(e){toast('הקובץ לא תקין');}};
   inp.click();
-}
+};
 
-init();
+// ── PWA service worker ─────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
 </script>
 </body>
 </html>
